@@ -3,6 +3,7 @@ autopep8
 Django==2.1.*
 pycodestyle
 pytz
+Pillow
 sqlparse
 Unipath
 dj-database-url
