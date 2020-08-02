@@ -1,0 +1,214 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="panel-header bg-primary-gradient">
+  <div class="page-inner py-5">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row"
+    >
+      <div>
+        <h2 class="text-white pb-2 fw-bold">Statistiques</h2>
+        <h5 class="text-white op-7 mb-2">
+          Tous les statistiques et informations sur le model et les images
+          labelisees
+        </h5>
+      </div>
+      <div class="ml-md-auto py-2 py-md-0">
+        <a href="#" class="btn btn-white btn-border btn-round mr-2">Predict</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-inner mt--5">
+  <div class="row mt--2"></div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body pb-0">
+          <h2 class="mb-2 fw-bold text-primary">95%</h2>
+          <p class="fw-bold">Accuracy</p>
+          <div class="pull-in sparkline-fix">
+            <div id="lineChart"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body pb-0">
+          <h2 class="mb-2 fw-bold text-danger">+12,000</h2>
+          <p class="fw-bold">Images classifiees</p>
+          <div class="pull-in sparkline-fix">
+            <div id="lineChart2"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card">
+        <div class="card-body pb-0">
+          <h2 class="mb-2 fw-bold text-success">10</h2>
+          <p class="fw-bold">Utilisateurs</p>
+          <div class="pull-in sparkline-fix">
+            <div id="lineChart3"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-head-row">
+            <div class="card-title">Statistiques Model</div>
+            <div class="card-tools">
+              <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
+                <span class="btn-label">
+                  <i class="fa fa-pencil"></i>
+                </span>
+                Exporter
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="chart-container" style="min-height: 375px;">
+            <canvas id="statisticsChart"></canvas>
+          </div>
+          <div id="myChartLegend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+{% endblock content %} {% block javascripts %}
+
+<script src="/static/assets/js/demo.js"></script>
+
+<script>
+  $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#177dff",
+    fillColor: "rgba(23, 125, 255, 0.14)",
+  });
+
+  $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#f3545d",
+    fillColor: "rgba(243, 84, 93, .14)",
+  });
+
+  $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#31ce36",
+    fillColor: "rgba(30, 224, 36, .14)",
+  });
+
+  Circles.create({
+    id: "circles-1",
+    radius: 45,
+    value: 60,
+    maxValue: 100,
+    width: 7,
+    text: 5,
+    colors: ["#f1f1f1", "#FF9E27"],
+    duration: 400,
+    wrpClass: "circles-wrp",
+    textClass: "circles-text",
+    styleWrapper: true,
+    styleText: true,
+  });
+
+  Circles.create({
+    id: "circles-2",
+    radius: 45,
+    value: 70,
+    maxValue: 100,
+    width: 7,
+    text: 36,
+    colors: ["#f1f1f1", "#2BB930"],
+    duration: 400,
+    wrpClass: "circles-wrp",
+    textClass: "circles-text",
+    styleWrapper: true,
+    styleText: true,
+  });
+
+  Circles.create({
+    id: "circles-3",
+    radius: 45,
+    value: 40,
+    maxValue: 100,
+    width: 7,
+    text: 12,
+    colors: ["#f1f1f1", "#F25961"],
+    duration: 400,
+    wrpClass: "circles-wrp",
+    textClass: "circles-text",
+    styleWrapper: true,
+    styleText: true,
+  });
+
+  var totalIncomeChart = document
+    .getElementById("totalIncomeChart")
+    .getContext("2d");
+
+  var mytotalIncomeChart = new Chart(totalIncomeChart, {
+    type: "bar",
+    data: {
+      labels: ["S", "M", "T", "W", "T", "F", "S", "S", "M", "T"],
+      datasets: [
+        {
+          label: "Total Income",
+          backgroundColor: "#ff9e27",
+          borderColor: "rgb(23, 125, 255)",
+          data: [6, 4, 9, 5, 4, 6, 4, 3, 8, 10],
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: false,
+      },
+      scales: {
+        yAxes: [
+          {
+            ticks: {
+              display: false, //this will remove only the label
+            },
+            gridLines: {
+              drawBorder: false,
+              display: false,
+            },
+          },
+        ],
+        xAxes: [
+          {
+            gridLines: {
+              drawBorder: false,
+              display: false,
+            },
+          },
+        ],
+      },
+    },
+  });
+</script>
+
+{% endblock javascripts %}

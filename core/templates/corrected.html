@@ -1,0 +1,55 @@
+{% extends "layouts/base.html" %} {% block title %} Prediction {% endblock title %}
+
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="page-inner">
+  <div class="page-header">
+    <h4 class="page-title"></h4>
+    <ul class="breadcrumbs">
+      <li class="nav-home">
+        <a href={% url 'home' %}>
+          <i class="flaticon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="javascript:void(0);">Eye Fundus Image</a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="javascript:void(0);">Correct</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-primary card-annoucement card-round">
+                    <div class="card-body text-center">
+                        <div class="card-opening fw-bold">Merci {{ request.user.username }},</div>
+                        <div class="card-desc">
+                            l'image a été corrigée et incluse dans notre <span class="fw-bold">Dataset</span> dans les futures sessions de training.
+                        </div>
+                        <div class="card-detail">
+                              <a href="/labelise/" class="btn btn-light btn-rounded">Labeliser d'autre images?</a>
+                              <a href="/predict/" class="btn btn-light btn-rounded">Tester le modèle</a>
+                        </div>
+                    </div>
+                </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+
+
+{% endblock javascripts %}

@@ -1,0 +1,158 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="panel-header bg-primary-gradient">
+  <div class="page-inner py-5">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row"
+    >
+      <div>
+        <h2 class="text-white pb-2 fw-bold">Retinocheck</h2>
+        <h5 class="text-white op-7 mb-2">
+          Rapport détaillé
+        </h5>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-inner">
+  <div class="row">
+    <div class="col-md-6">
+                <div class="card card-post card-round">
+                    <img class="card-img-top" src="/static/assets/img/13_right.jpeg"  alt="Card image cap" id="result-image">
+                    <div class="card-body">
+                        <div class="col-sm-12 col-md-12">
+                <div class="card card-stats card-success card-round">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="icon-big text-center">
+                                    <i class="flaticon-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-10 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category fw-bold">Oeil sain</p>
+                                    <h4 class="card-title">Pas de maladie!</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                    
+
+            </div>
+                </div>
+            </div>
+  <div class="col-md-6">
+                        <div class="chart-container" data-omega="57,20,13,5,5" id="detailed-results">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                                                                  <div class="form-group">
+                                    <label class="control-label">
+                                        Temps d'execution
+                                    </label> 
+                                    <p class="form-control-static">1 sec</p>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Date
+                                    </label> 
+                                    <p class="form-control-static">06 juin 2020</p>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Precision modele
+                                    </label> 
+                                    <p class="form-control-static">89%</p> 
+                                    </div>  
+
+                          </div>
+                          <div class="col-md-6">
+                                                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Algorithme de preprocessing
+                                    </label> 
+                                    <p class="form-control-static fw-bold">CLAHE</p>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Architecture du Modele
+                                    </label> 
+                                    <p class="form-control-static fw-bold">ResNet50</p>
+                                    </div>
+                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Precision modele
+                                    </label> 
+                                    <p class="form-control-static">89%</p> 
+                                    </div>  
+
+                          </div>
+                        </div>
+
+  </div>
+</div>
+</div>
+</div>
+
+{% endblock content %} {% block javascripts %}
+
+
+<script>
+
+  new Drift(document.querySelector("#result-image"), {
+    paneContainer: document.querySelector("#detailed-results")
+  });
+
+  var chartElement = document.getElementById("detailed-results");
+  var dataChart = chartElement.getAttribute('data-omega').split(',');
+  console.log(dataChart);
+  var pieChart = document.getElementById('pieChart').getContext('2d');
+  var myPieChart = new Chart(pieChart, {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: dataChart,
+					backgroundColor :["#31ce36","#ffba08","#dc2f02", "#d00000", "#03071e"],
+					borderWidth: 0
+				}],
+				labels: ['Oeil Sain', 'Mild Nonproliferative RD', 'Moderate Nonproliferative RD', "Severe Nonproliferative RD", "Proliferative RD"] 
+			},
+			options : {
+				responsive: true, 
+				maintainAspectRatio: true,
+				legend: {
+					position : 'bottom',
+					labels : {
+						fontColor: 'rgb(154, 154, 154)',
+						fontSize: 12,
+						usePointStyle : true,
+						padding: 20
+					}
+				},
+				pieceLabel: {
+					render: 'percentage',
+					fontColor: 'white',
+					fontSize: 15,
+				},
+				tooltips: true,
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20,
+						bottom: 20
+					}
+				}
+			}
+		});
+
+</script>
+
+{% endblock javascripts %}

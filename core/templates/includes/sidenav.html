@@ -1,0 +1,89 @@
+
+		<!-- Sidebar -->
+		<div class="sidebar sidebar-style-2" data-background-color="dark2">
+					
+			<div class="sidebar-wrapper scrollbar scrollbar-inner">
+				<div class="sidebar-content">
+				
+					{% if user.is_authenticated %}
+
+						<div class="user">
+							<div class="avatar-sm float-left mr-2">
+								<img src="/static/assets/img/profile.png" alt="..." class="avatar-img rounded-circle">
+							</div>
+							<div class="info">
+								<a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+									<span>
+										{{ request.user.username }}
+										<span class="user-level">
+											{{ request.user.email }}  
+										</span>
+										<span class="caret"></span>
+									</span>
+								</a>
+								<div class="clearfix"></div>
+
+								<div class="collapse in" id="collapseExample">
+									<ul class="nav">
+										<li>
+											<a href={% url 'profile' %}>
+												<span class="link-collapse">My Profile</span>
+											</a>
+										</li>
+										<li>
+											<a href={% url 'logout' %}>
+												<span class="link-collapse">Logout</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<ul class="nav nav-primary">
+							<li class="nav-item active">
+								<a data-toggle="collapse" href={% url 'logout' %} class="collapsed" aria-expanded="false">
+									<i class="fas fa-chart-line"></i>
+									<p>Statistiques</p>
+								</a>
+							</li>
+							<li class="nav-section">
+								<span class="sidebar-mini-icon">
+									<i class="fa fa-ellipsis-h"></i>
+								</span>
+								<h4 class="text-section">Operations</h4>
+							</li>
+							<div class="nav-item">
+								<a href="/predict.html"><i class="fas fa-play"></i>Prediction</a>
+							</div>
+							<div class="nav-item">
+								<a href=""><i class="fas fa-pen"></i>Labeliser</a>
+							</div>
+							<li class="nav-item">
+								<a data-toggle="collapse" href="#docs">
+									<i class="fas fa-chart-line"></i>
+									<p>Documentation</p>
+									<span class="caret"></span>
+								</a>
+								<div class="collapse" id="docs">
+									<ul class="nav nav-collapse">
+										<li>
+											<a href="/docs/maladie">
+												<span class="sub-item">C'est Quoi?</span>
+											</a>
+										</li>
+										<li>
+											<a href="/docs/stages">
+												<span class="sub-item">Stages de la maladie</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</li>
+						</ul>
+					
+					{% endif %}	
+
+				</div>
+			</div>
+		</div>
+		<!-- End Sidebar -->

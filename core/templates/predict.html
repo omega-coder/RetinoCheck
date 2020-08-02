@@ -1,0 +1,167 @@
+{% extends "layouts/base.html" %} {% block title %} Prediction {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}
+<style>
+#upload {
+    opacity: 0;
+    color: #333 !important;
+}
+
+#upload-label {
+    position: absolute;
+    top: 50%;
+    left: 1rem;
+    transform: translateY(-50%);
+}
+
+.image-area {
+    padding: 1rem;
+    position: relative;
+}
+
+.image-area::before {
+    content: '';
+    color: #fff;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.8rem;
+    z-index: 1;
+}
+
+.image-area img {
+    z-index: 2;
+    position: relative;
+}
+</style>
+
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="page-inner">
+  <div class="page-header">
+    <h4 class="page-title"></h4>
+    <ul class="breadcrumbs">
+      <li class="nav-home">
+        <a href={% url 'home' %}>
+          <i class="flaticon-home"></i>
+        </a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="javascript:void(0);">Operations</a>
+      </li>
+      <li class="separator">
+        <i class="flaticon-right-arrow"></i>
+      </li>
+      <li class="nav-item">
+        <a href="javascript:void(0);">Prediction Modele</a>
+      </li>
+    </ul>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title text-center">Tester vos images sur notre modele</div>
+        </div>
+        <div class="card-body">
+          <div class="row py-4">
+            <div class="col-lg-6 mx-auto">
+              <form action={% url 'home' %} method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                  <div
+                class="input-group mb-3 px-2 py-2 rounded-pill bg-dark shadow-sm"
+              >
+                <input
+                  name="test-image"
+                  id="upload"
+                  type="file"
+                  onchange="readURL(this);"
+                  class="form-control border-0"
+                />
+                <label
+                  id="upload-label"
+                  for="upload"
+                  class="font-weight-light text-muted"
+                  >choisissez une image</label
+                >
+                <div class="input-group-append">
+                  <label
+                    for="upload"
+                    class="btn btn-light m-0 rounded-pill px-4"
+                  >
+                    <i class="fas fa-cloud-upload-alt mr-2 text-muted"></i
+                    ><small class="text-uppercase font-weight-bold text-muted"
+                      >choisissez une image</small
+                    ></label
+                  >
+                </div>
+            </div>
+              <p class="font-italic text-white text-center">
+                Un aperçu de votre image sera disponible dans la case ci-dessous.
+              </p>
+              <div class="image-area mt-4">
+                <img
+                  id="imageResult"
+                  src="#"
+                  alt=""
+                  class="img-fluid rounded shadow-sm mx-auto d-block"
+                />
+              </div>
+                <input type="submit" name="predict-submit" class="btn btn-primary btn-block fw-bold" value="Lancer la détection">
+                </form>
+            </div>
+          </div>
+        </div>
+        <div class="card-action">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}
+
+<script>
+    function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#imageResult')
+                .attr('src', e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+$(function () {
+    $('#upload').on('change', function () {
+        readURL(input);
+    });
+});
+
+var input = document.getElementById( 'upload' );
+var infoArea = document.getElementById( 'upload-label' );
+
+input.addEventListener( 'change', showFileName );
+function showFileName( event ) {
+  var input = event.srcElement;
+  var fileName = input.files[0].name;
+  infoArea.textContent = 'Image: ' + fileName;
+}
+</script>
+
+{% endblock javascripts %}

@@ -1,0 +1,40 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} LOGOUT FIRST  {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <br />
+    <br />
+    <div class="page-inner">
+        <h4 class="page-title">SORRY!</h4>
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                    <div class="card card-stats card-round">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-1">
+                                    <div class="icon-big text-center">
+                                        <i class="flaticon-error text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="col-11 col-stats">
+                                    <div class="numbers">
+                                        <p class="card-category">Error</p>
+                                        <h4 class="card-title">You need to <a href={% url 'logout' %}?next={{next_url}}><strong>Logout</strong></a> first.</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+{% endblock content %}
+
+<!-- Specific JS goes HERE -->
+{% block javascripts %}{% endblock javascripts %}

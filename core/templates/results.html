@@ -1,0 +1,167 @@
+{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="panel-header bg-primary-gradient">
+  <div class="page-inner py-5">
+    <div
+      class="d-flex align-items-left align-items-md-center flex-column flex-md-row"
+    >
+      <div>
+        <h2 class="text-white pb-2 fw-bold">Résultats</h2>
+        <h5 class="text-white op-7 mb-2">
+          résultats détaillés de votre demande. 
+        </h5>
+      </div>
+      <div class="ml-md-auto py-2 py-md-0">
+        <a href="/report/generate/" class="btn btn-white btn-round mr-2">Generate Report</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="page-inner">
+  <div class="row">
+    <div class="col-md-6">
+                <div class="card card-post card-round">
+                    <img class="card-img-top" src="/static/assets/img/17_right.jpeg?w=400" data-zoom="/static/assets/img/17_right.jpeg?w=1400" alt="Card image cap" id="result-image">
+                    <div class="card-body">
+                        <div class="col-sm-12 col-md-12">
+                <div class="card card-stats card-success card-round">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-2">
+                                <div class="icon-big text-center">
+                                    <i class="flaticon-success"></i>
+                                </div>
+                            </div>
+                            <div class="col-10 col-stats">
+                                <div class="numbers">
+                                    <p class="card-category fw-bold">Oeil sain</p>
+                                    <h4 class="card-title">Pas de maladie!</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                                    <div class="form-group">
+                                    <label class="control-label">
+                                        Temps de prediction
+                                    </label> 
+                                    <p class="form-control-static">1 sec</p> 
+                        </div>
+
+            </div>
+                </div>
+            </div>
+  <div class="col-md-6">
+                        <div class="chart-container" data-omega="80,14,2,1,1" id="detailed-results">
+                            <canvas id="pieChart"></canvas>
+                        </div>
+                        <form action="/image/correct" method="POST" class="form-control">
+                          <h4>Corriger le resultat?</h4>
+                          <span class="text-muted text-danger">Seuls les ophtalmologistes peuvent corriger le résultat du modèle</span>
+                          {% csrf_token %}
+                          <input type="hidden" value="10_left.jpeg" name="image-name">
+                          <div class="form-group">
+                            <br>
+                                    <label for="largeSelect">Choissisez le stade convenable</label>
+                                    <select class="form-control form-control-lg" id="largeSelect">
+                                        <option value="0" selected>Oeil sain</option>
+                                        <option value="1">Mild Nonproliferative RD</option>
+                                        <option value="2">Moderate Nonproliferative RD</option>
+                                        <option value="3">Severe Nonproliferative RD</option>
+                                        <option value="4">Proliferative RD</option>
+                                    </select>
+                                </div>
+                                <input type="submit" class="btn btn-primary btn-block" name="correct-result" value="Corriger!">
+                        </form>
+            </div>
+</div>
+</div>
+
+{% endblock content %} {% block javascripts %}
+
+<script src="/static/assets/js/demo.js"></script>
+
+<script>
+
+  new Drift(document.querySelector("#result-image"), {
+    paneContainer: document.querySelector("#detailed-results")
+  });
+
+  var chartElement = document.getElementById("detailed-results");
+  var dataChart = chartElement.getAttribute('data-omega').split(',');
+  var pieChart = document.getElementById('pieChart').getContext('2d');
+  var myPieChart = new Chart(pieChart, {
+			type: 'pie',
+			data: {
+				datasets: [{
+					data: dataChart,
+					backgroundColor :["#31ce36","#ffba08","#dc2f02", "#d00000", "#03071e"],
+					borderWidth: 0
+				}],
+				labels: ['Oeil Sain', 'Mild Nonproliferative RD', 'Moderate Nonproliferative RD', "Severe Nonproliferative RD", "Proliferative RD"] 
+			},
+			options : {
+				responsive: true, 
+				maintainAspectRatio: true,
+				legend: {
+					position : 'bottom',
+					labels : {
+						fontColor: 'rgb(154, 154, 154)',
+						fontSize: 12,
+						usePointStyle : true,
+						padding: 20
+					}
+				},
+				pieceLabel: {
+					render: 'percentage',
+					fontColor: 'white',
+					fontSize: 15,
+				},
+				tooltips: true,
+				layout: {
+					padding: {
+						left: 20,
+						right: 20,
+						top: 20,
+						bottom: 20
+					}
+				}
+			}
+		});
+
+
+  $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#177dff",
+    fillColor: "rgba(23, 125, 255, 0.14)",
+  });
+
+  $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#f3545d",
+    fillColor: "rgba(243, 84, 93, .14)",
+  });
+
+  $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+    type: "line",
+    height: "70",
+    width: "100%",
+    lineWidth: "2",
+    lineColor: "#31ce36",
+    fillColor: "rgba(30, 224, 36, .14)",
+  });
+
+
+</script>
+
+{% endblock javascripts %}
