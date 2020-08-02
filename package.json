@@ -1,0 +1,33 @@
+{
+  "name": "retino-check",
+  "version": "1.0.0",
+  "description": " A platform for eye fundus image classification/detection for the Diabetic Retinopathy disease with many more features, labelisation, custom model loading, dashboard for the dataset, multiple account types for users and doctors.",
+  "scripts": {
+    "lint": "eslint ."
+  },
+  "engines": {
+    "node": "8.11.3"
+  },
+  "devDependencies": {
+    "eslint": "5.0.0",
+    "eslint-config-google": "0.9.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/omega-coder/RetinoCheck"
+  },
+  "keywords": [
+    "django",
+    "admin-panel",
+    "open-source",
+    "diabetic-retinopathy",
+    "machine-learning",
+    "classification",
+    "DRF"
+  ],
+  "author": "CHERIEF Yassine",
+  "contributors": [
+    "BRAHIM Yassine <fy_brahim@esi.dz>"
+  ],
+  "license": "MIT"
+}
