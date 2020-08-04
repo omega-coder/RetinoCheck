@@ -10,7 +10,7 @@ from django import template
 from django.contrib.auth.decorators import login_required
 from django.db.utils import IntegrityError
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from PIL import Image
 
@@ -63,7 +63,16 @@ def prediction(request):
                 image_pk = f"{sha1(im.read()).hexdigest()}"
                 instance = TestImage.objects.filter(name=image_pk).first()
                 if instance:
-                    context["message"] = "Already prredicted this image!"
+                    if instance.real_label is not None:
+                        if instance.real_label != "":
+                            if int(instance.real_label) == int(instance.pred_class):
+                                context["message"] = f"Both doctor and model predicted the image as class {instance.real_label}"
+                            else:
+                                context["message"] = f"Doctor labelized image as class {instance.real_label}, but model predicted class {instance.pred_class}"        
+                        else:
+                            context["message"] = "Already prredicted this image! (Not yet labelized!)"   
+                    else:
+                        context["message"] = "Already prredicted this image! (Not yet labelized!)"
                     context["instance"] = instance
                     context["stade"] = DIAG.get(int(instance.pred_class), "stade")
                     context["description"] = DIAG.get(int(instance.pred_class), "description")
@@ -92,11 +101,38 @@ def prediction(request):
             except IntegrityError:
                 pass
             except Exception as e:
-                print(type(e))
+                print(type(e), e)
     return render(request, "predict.html", context)
 
 
 @login_required(login_url="/login/")
 def image_labelize(request):
     context = {}
-    render(request, "non-labelize.html", context)
+    return render(request, "non-labelized.html", context)
+
+
+@login_required(login_url="/login/")
+def correct_prediction(request):
+    context = {}
+    if request.method == "POST":
+        #import pdb; pdb.set_trace()
+        name = request.POST["name"]
+        if request.POST["name"] and request.POST["reallabel"]:
+
+            instance = TestImage.objects.filter(name=name).first()
+            if instance:
+                instance.real_label = request.POST["reallabel"]
+                instance.save()
+                if int(instance.real_label) == int(instance.pred_class):
+                    context["message"] = f"Both doctor and model predicted the image as class {instance.real_label}"
+                else:
+                    context["message"] = f"Doctor labelized image as class {instance.real_label}, but model predicted class {instance.pred_class}"        
+                context["instance"] = instance
+                context["stade"] = DIAG.get(int(instance.pred_class), "stade")
+                context["description"] = DIAG.get(int(instance.pred_class), "description")
+                context["uistyle"] = DIAG.get(int(instance.pred_class), "uistyle")
+                return render(request, "results.html", context=context)
+            else:
+                return redirect('predict')
+    else:
+        return redirect('predict')
