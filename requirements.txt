@@ -10,3 +10,9 @@ dj-database-url
 python-decouple
 gunicorn
 whitenoise
+tensorflow
+Flask==1.1.2
+flask-restx==0.2.0
+tensorflow==2.3.0
+tensorflow-estimator==2.3.0
+
