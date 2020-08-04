@@ -76,7 +76,7 @@
         <div class="card-body">
           <div class="row py-4">
             <div class="col-lg-6 mx-auto">
-              <form action={% url 'home' %} method="POST" enctype="multipart/form-data">
+              <form action={% url 'predict' %} method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                   <div
                 class="input-group mb-3 px-2 py-2 rounded-pill bg-dark shadow-sm"
@@ -112,7 +112,7 @@
               <div class="image-area mt-4">
                 <img
                   id="imageResult"
-                  src="#"
+                  src="x"
                   alt=""
                   class="img-fluid rounded shadow-sm mx-auto d-block"
                 />
