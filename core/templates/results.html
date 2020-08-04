@@ -1,7 +1,41 @@
 {% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+{% block stylesheets %}
+
+<style>
+.card-0 {
+    color: #f7f7f7 !important;
+    background: #31ce36 !important;
+}
+
+.card-1 {
+    color: #f7f7f7 !important;
+    background: #ffba08 !important;
+}
+
+.card-2 {
+    color: #f7f7f7 !important;
+    background: #dc2f02 !important;
+}
+
+.card-3 {
+    color: #f7f7f7 !important;
+    background: #d00000 !important;
+}
+
+.card-4 {
+    color: #f7f7f7 !important;
+    background: #03071e !important;
+}
+
+body[data-background-color="dark"] .card-category {
+  color: white !important;
+}
+
+</style>
+
+{% endblock stylesheets %} {% block content %}
 
 <div class="panel-header bg-primary-gradient">
   <div class="page-inner py-5">
@@ -24,10 +58,10 @@
   <div class="row">
     <div class="col-md-6">
                 <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/17_right.jpeg?w=400" data-zoom="/static/assets/img/17_right.jpeg?w=1400" alt="Card image cap" id="result-image">
+                    <img class="card-img-top" src="{{ MEDIA_URL }}{{instance.image}}?w=400" data-zoom="{{ MEDIA_URL }}{{instance.image}}?w=1400" alt="Card image cap" id="result-image">
                     <div class="card-body">
                         <div class="col-sm-12 col-md-12">
-                <div class="card card-stats card-success card-round">
+                <div class="card card-stats {{ uistyle }} card-round">
                     <div class="card-body ">
                         <div class="row">
                             <div class="col-2">
@@ -37,13 +71,15 @@
                             </div>
                             <div class="col-10 col-stats">
                                 <div class="numbers">
-                                    <p class="card-category fw-bold">Oeil sain</p>
-                                    <h4 class="card-title">Pas de maladie!</h4>
+                                    <p class="card-category fw-bold">{{ stade }}</p>
+                                    <h4 class="card-title"></h4>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+                {{ description }}
             </div>
                                     <div class="form-group">
                                     <label class="control-label">
@@ -56,14 +92,14 @@
                 </div>
             </div>
   <div class="col-md-6">
-                        <div class="chart-container" data-omega="80,14,2,1,1" id="detailed-results">
+                        <div class="chart-container" data-omega="{{ instance.preds }}" id="detailed-results">
                             <canvas id="pieChart"></canvas>
                         </div>
-                        <form action="/image/correct" method="POST" class="form-control">
+                        <form action="/prediction/correct" method="POST" class="form-control">
                           <h4>Corriger le resultat?</h4>
                           <span class="text-muted text-danger">Seuls les ophtalmologistes peuvent corriger le résultat du modèle</span>
                           {% csrf_token %}
-                          <input type="hidden" value="10_left.jpeg" name="image-name">
+                          <input type="hidden" value="{{ instance.name }}" name="image-name">
                           <div class="form-group">
                             <br>
                                     <label for="largeSelect">Choissisez le stade convenable</label>
@@ -102,7 +138,7 @@
 					backgroundColor :["#31ce36","#ffba08","#dc2f02", "#d00000", "#03071e"],
 					borderWidth: 0
 				}],
-				labels: ['Oeil Sain', 'Mild Nonproliferative RD', 'Moderate Nonproliferative RD', "Severe Nonproliferative RD", "Proliferative RD"] 
+				labels: ['Oeil Sain', 'Mild Nonproliferative DR', 'Moderate Nonproliferative DR', "Severe Nonproliferative DR", "Proliferative DR"] 
 			},
 			options : {
 				responsive: true, 
@@ -139,8 +175,8 @@
     height: "70",
     width: "100%",
     lineWidth: "2",
-    lineColor: "#177dff",
-    fillColor: "rgba(23, 125, 255, 0.14)",
+    linebackground: "#177dff",
+    fillbackground: "rgba(23, 125, 255, 0.14)",
   });
 
   $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
@@ -148,8 +184,8 @@
     height: "70",
     width: "100%",
     lineWidth: "2",
-    lineColor: "#f3545d",
-    fillColor: "rgba(243, 84, 93, .14)",
+    linebackground: "#f3545d",
+    fillbackground: "rgba(243, 84, 93, .14)",
   });
 
   $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
@@ -157,8 +193,8 @@
     height: "70",
     width: "100%",
     lineWidth: "2",
-    lineColor: "#31ce36",
-    fillColor: "rgba(30, 224, 36, .14)",
+    linebackground: "#31ce36",
+    fillbackground: "rgba(30, 224, 36, .14)",
   });
 
 
