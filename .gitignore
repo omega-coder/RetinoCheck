@@ -130,3 +130,9 @@ dmypy.json
 
 # Vscode 
 .vscode/
+
+# media folder
+#
+
+media/*
+!media/.gitkeep
