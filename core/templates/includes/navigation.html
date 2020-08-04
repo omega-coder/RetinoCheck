@@ -28,6 +28,7 @@
 
 					<div class="container-fluid">
 						<ul class="navbar-nav topbar-nav ml-md-auto align-items-center">
+							{% if request.user.is_superuser %}
 							<li class="nav-item dropdown hidden-caret">
 								<a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
 									<i class="fas fa-layer-group"></i>
@@ -43,37 +44,19 @@
 												<a class="col-6 col-md-4 p-0" href="#">
 													<div class="quick-actions-item">
 														<i class="flaticon-file-1"></i>
-														<span class="text">Generated Report</span>
+														<span class="text">Start Training</span>
 													</div>
 												</a>
 												<a class="col-6 col-md-4 p-0" href="#">
 													<div class="quick-actions-item">
 														<i class="flaticon-database"></i>
-														<span class="text">Create New Database</span>
+														<span class="text">Create New Image</span>
 													</div>
 												</a>
 												<a class="col-6 col-md-4 p-0" href="#">
 													<div class="quick-actions-item">
 														<i class="flaticon-pen"></i>
-														<span class="text">Create New Post</span>
-													</div>
-												</a>
-												<a class="col-6 col-md-4 p-0" href="#">
-													<div class="quick-actions-item">
-														<i class="flaticon-interface-1"></i>
-														<span class="text">Create New Task</span>
-													</div>
-												</a>
-												<a class="col-6 col-md-4 p-0" href="#">
-													<div class="quick-actions-item">
-														<i class="flaticon-list"></i>
-														<span class="text">Completed Tasks</span>
-													</div>
-												</a>
-												<a class="col-6 col-md-4 p-0" href="#">
-													<div class="quick-actions-item">
-														<i class="flaticon-file"></i>
-														<span class="text">Create New Invoice</span>
+														<span class="text">Change Data on Picture</span>
 													</div>
 												</a>
 											</div>
@@ -81,6 +64,7 @@
 									</div>
 								</div>
 							</li>
+							{% endif %}
 							{% if request.user.is_staff %}
 								<li class="nav-item hidden-caret">
 								<button class="btn btn-success btn-sm">
