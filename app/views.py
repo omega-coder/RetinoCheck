@@ -1,42 +1,102 @@
 # -*- encoding: utf-8 -*-
 
 
-from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
-from django.template import loader
-from django.http import HttpResponse
+import io
+import json
+from hashlib import sha1
+
+import requests
 from django import template
+from django.contrib.auth.decorators import login_required
+from django.db.utils import IntegrityError
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.template import loader
+from PIL import Image
+
+from .models import TestImage
+from .diagnosis import DRDiagnosis
+
+DIAG = DRDiagnosis()
+
 
 @login_required(login_url="/login/")
 def index(request):
     return render(request, "index.html")
 
+
 @login_required(login_url="/login/")
 def pages(request):
     context = {}
     try:
-        load_template = request.path.split('/')[-1]
-        html_template = loader.get_template( load_template )
+        load_template = request.path.split("/")[-1]
+        html_template = loader.get_template(load_template)
         return HttpResponse(html_template.render(context, request))
-        
     except template.TemplateDoesNotExist:
-
-        html_template = loader.get_template( 'error-404.html' )
+        html_template = loader.get_template("error-404.html")
+        return HttpResponse(html_template.render(context, request))
+    except Exception:
+        html_template = loader.get_template("error-500.html")
         return HttpResponse(html_template.render(context, request))
 
-    except:
-    
-        html_template = loader.get_template( 'error-500.html' )
-        return HttpResponse(html_template.render(context, request))
 
-@login_required(login_url='/login/')
+@login_required(login_url="/login/")
 def profile(request):
-    return render(request, 'accounts/profile.html', {"alpha": "beta"})
+    return render(request, "accounts/profile.html", {"alpha": "beta"})
 
-@login_required(login_url='/login/')
+
+@login_required(login_url="/login/")
 def results(request):
-    return render(request, 'results.html', {"msg": "Hello"})
+    return render(request, "results.html", {"msg": "Hello"})
 
-@login_required(login_url='/login/')
+
+@login_required(login_url="/login/")
 def prediction(request):
-    return render(request, 'predict.html', {})
+    context = {}
+    if request.method == "POST":
+        if request.FILES:
+            try:
+                im = request.FILES["test-image"]
+                image_bytes = io.BytesIO(im.read())
+                data = {"model_name": "dr-latest", "model_type": 0}
+                im.seek(0)
+                image_pk = f"{sha1(im.read()).hexdigest()}"
+                instance = TestImage.objects.filter(name=image_pk).first()
+                if instance:
+                    context["message"] = "Already prredicted this image!"
+                    context["instance"] = instance
+                    context["stade"] = DIAG.get(int(instance.pred_class), "stade")
+                    context["description"] = DIAG.get(int(instance.pred_class), "description")
+                    context["uistyle"] = DIAG.get(int(instance.pred_class), "uistyle")
+                    return render(request, "results.html", context=context)
+                resp = requests.post("http://127.0.0.1:5000/api/v1/predict/", data=data, files={"image": image_bytes})
+                im.seek(0)
+                resp_json = resp.json()
+                preds = ",".join(
+                    ["{:.6f}".format(resp_json["predictions"][key]) for key in resp_json["predictions"].keys()]
+                )
+                instance = TestImage(
+                    name=image_pk,
+                    image=im,
+                    author=request.user.username,
+                    pred_class=json.loads(resp.text)["pred_class"],
+                    preds=preds,
+                )
+                instance.save()
+                context["instance"] = instance
+                context["message"] = "success!"
+                context["stade"] = DIAG.get(int(instance.pred_class), "stade")
+                context["description"] = DIAG.get(int(instance.pred_class), "description")
+                context["uistyle"] = DIAG.get(int(instance.pred_class), "uistyle")
+                return render(request, "results.html", context=context)
+            except IntegrityError:
+                pass
+            except Exception as e:
+                print(type(e))
+    return render(request, "predict.html", context)
+
+
+@login_required(login_url="/login/")
+def image_labelize(request):
+    context = {}
+    render(request, "non-labelize.html", context)
