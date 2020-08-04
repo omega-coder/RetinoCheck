@@ -1,5 +1,9 @@
 # -*- encoding: utf-8 -*-
 
 from django.contrib import admin
+from .models import TestImage
 
-# Register your models here.
+class TestImageAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(TestImage)
