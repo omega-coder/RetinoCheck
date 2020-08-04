@@ -10,5 +10,8 @@ urlpatterns = [
     path("results/", views.results, name="results"),
     path("predict/", views.prediction, name="predict"),
     path("image/labelize/", views.image_labelize, name="labelize"),
+    
+    path("prediction/correct", views.correct_prediction, name="correct_pred"),
+    
     path("", views.index, name="home"),
 ]
