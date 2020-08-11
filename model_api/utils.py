@@ -5,12 +5,11 @@ import base64
 import os
 import re
 from io import BytesIO
+from datetime import datetime
 import numpy as np
 import tensorflow as tf
 from PIL import Image
 from unipath import Path
-from datetime import datetime
-
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_DIR = Path(__file__).parent
@@ -32,33 +31,51 @@ def np_to_base64(img_np):
     img = Image.fromarray(img_np.astype("uint8"), "RGB")
     buffered = BytesIO()
     img.save(buffered, format="PNG")
-    return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode("ascii")
+    return "data:image/png;base64," + base64.b64encode(
+        buffered.getvalue()).decode("ascii")
 
 
 def load_pretrained_model(name, model_type=0):
     if model_type == 0:
-        model_path = os.path.join(BASE_DIR, f"app/trained_models/{name}/saved_model/")
-        model = tf.keras.models.load_model(model_path)
-        print("Model Loaded ...")
-        return model
-    else:
-        return None
-
+        model_path = os.path.join(BASE_DIR,
+                                  f"app/trained_models/{name}/saved_model/")
+        try:
+            model = tf.keras.models.load_model(model_path)
+            print(f"Model {name} Loaded ...")
+            return model
+        except ImportError:
+            return None
+        except IOError:
+            return None
 
 def model_predict(img, model):
     x_val = np.empty((1, 224, 224, 3), dtype=np.uint8)
-    img = img.resize((224,) * 2)
+    img = img.resize((224, ) * 2, reducing_gap=3.0)
     x_val[0, :, :, :] = img
-    preds = model.predict(x_val)
-    result = {}
-    pred_proba = float("{:.3f}".format(np.amax(preds)))  # Max probability
-    pred_class = int(np.argmax(np.squeeze(preds)))
-    preds = preds.tolist()
-    preds = list(map(lambda x: x * 100, preds[0]))
-    result = {
-        "predictions": {"0": preds[0], "1": preds[1], "2": preds[2], "3": preds[3], "4": preds[4]},
-        "pred_proba": pred_proba,
-        "pred_class": pred_class,
-        "pred_at": datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
-    }
-    return result
+    try:
+        preds = model.predict(x_val)
+        result = {}
+        pred_proba = float("{:.3f}".format(np.amax(preds)))  # Max probability
+        pred_class = int(np.argmax(np.squeeze(preds)))
+        preds = preds.tolist()
+        preds = list(map(lambda x: x * 100, preds[0]))
+        result = {
+            "predictions": {
+                "0": preds[0],
+                "1": preds[1],
+                "2": preds[2],
+                "3": preds[3],
+                "4": preds[4]
+            },
+            "pred_proba": pred_proba,
+            "pred_class": pred_class,
+            "pred_at": datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
+        }
+        return result
+    except ValueError:
+        return {
+            "status":
+            "error",
+            "message":
+            "mismatch between the provided input data and the model's expectations"
+        }
