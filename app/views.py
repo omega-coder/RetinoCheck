@@ -23,17 +23,17 @@ PREDICTION_API_ENDPOINT = "http://localhost:5000/api/v1/predict"
 
 @login_required(login_url="/login/")
 def index(request):
-    return render(request, "index.html")
+    return render(request, "index.html.j2")
 
 
 @login_required(login_url="/login/")
 def profile(request):
-    return render(request, "accounts/profile.html", {"alpha": "beta"})
+    return render(request, "accounts/profile.html.j2", {"alpha": "beta"})
 
 
 @login_required(login_url="/login/")
 def results(request):
-    return render(request, "results.html", {"msg": "Hello"})
+    return render(request, "results.html.j2", {"msg": "Hello"})
 
 
 @login_required(login_url="/login/")
@@ -62,7 +62,7 @@ def prediction(request):
                                                       "description")
                     context["uistyle"] = DIAG.get(int(instance.pred_class),
                                                   "uistyle")
-                    return render(request, "results.html", context=context)
+                    return render(request, "results.html.j2", context=context)
 
                 resp = requests.post(PREDICTION_API_ENDPOINT,
                                      data=data,
@@ -88,7 +88,7 @@ def prediction(request):
                 context["description"] = DIAG.get(instance.pred_class,
                                                   "description")
                 context["uistyle"] = DIAG.get(instance.pred_class, "uistyle")
-                return render(request, "results.html", context=context)
+                return render(request, "results.html.j2", context=context)
             except IntegrityError:
                 pass
             except Exception as error:
@@ -100,7 +100,7 @@ def prediction(request):
 @login_required(login_url="/login/")
 def image_labelize(request):
     context = {}
-    return render(request, "non-labelized.html", context)
+    return render(request, "non-labelized.html.j2", context)
 
 
 @login_required(login_url="/login/")
@@ -126,7 +126,7 @@ def correct_prediction(request):
                                                   "description")
                 context["uistyle"] = DIAG.get(int(instance.pred_class),
                                               "uistyle")
-                return render(request, "results.html", context=context)
+                return render(request, "results.html.j2", context=context)
             else:
                 return redirect('predict')
     else:

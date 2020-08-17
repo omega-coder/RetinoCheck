@@ -26,7 +26,7 @@ def login_view(request):
         else:
             msg = 'Error validating the form'    
 
-    return render(request, "accounts/login.html", {"form": form, "msg" : msg})
+    return render(request, "accounts/login.html.j2", {"form": form, "msg" : msg})
 
 def register_user(request):
 
@@ -34,7 +34,7 @@ def register_user(request):
     success = False
 
     if request.user.is_authenticated:
-        return render(request, 'logout-first.html', {"next_url": "/register"})
+        return render(request, 'logout-first.html.j2', {"next_url": "/register"})
 
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -54,5 +54,5 @@ def register_user(request):
     else:
         form = SignUpForm()
 
-    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "success" : success })
+    return render(request, "accounts/register.html.j2", {"form": form, "msg" : msg, "success" : success })
 
