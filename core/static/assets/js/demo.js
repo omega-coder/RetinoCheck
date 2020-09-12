@@ -17,22 +17,6 @@ Circles.create({
   styleText: true,
 });
 
-//Notify
-$.notify(
-  {
-    icon: "fas fa-check-circle",
-    title: "Connected",
-    message: "You are now connected as fy_cherief@esi.dz",
-  },
-  {
-    type: "success",
-    placement: {
-      from: "bottom",
-      align: "right",
-    },
-    time: 1000,
-  }
-);
 
 // JQVmap
 $("#map-example").vectorMap({
