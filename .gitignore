@@ -137,6 +137,7 @@ dmypy.json
 media/*
 !media/.gitkeep
 !media/reports_data
+!media/reports
 
 # pretrained SavedModels 
 
