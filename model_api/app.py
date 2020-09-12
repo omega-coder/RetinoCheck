@@ -27,6 +27,7 @@ LOADED_MODEL = {"name": "dr-latest", "model": None}
 LOADED_MODEL["model"] = load_pretrained_model("dr-latest", model_type=0)
 
 
+
 @ns.route("/v1/predict/")
 @ns.expect(upload_parser)
 class Predict(Resource):
@@ -54,4 +55,4 @@ class Predict(Resource):
 
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5000, host="127.0.0.1")
+    app.run(debug=False, port=5000, host="0.0.0.0")
