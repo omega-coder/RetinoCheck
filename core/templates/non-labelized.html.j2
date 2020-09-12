@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %} {% block title %} Prediction {% endblock title %}
+{% extends "layouts/base.html.j2" %} {% block title %} Prediction {% endblock title %}
 
 {% block stylesheets %}
 
@@ -30,114 +30,56 @@
     </ul>
   </div>
   <div class="row">
+  {% for image in images %}
     <div class="col-md-4">
                       <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/17_left.jpeg" alt="Card image cap">
+                    <img class="card-img-top img-responsive" src="{{ MEDIA_URL }}{{image.image}}" alt="Card image cap" width=300 height=250>
                     <div class="card-body">
                         <div class="d-flex">
                             <div class="info-post">
+                                {% if image.real_label %}
+                                <button class="btn btn-success btn-sm btn-rounded">Labelized</button>
+                                {% else %}
                                 <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
+                                {% endif %}
                                 <br>
                                 <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
+                                <p class="date">Uploaded: {{image.uploaded_at}}</p>
+                                <p class="date">Author: {{image.author}}</p>
+
                             </div>
                         </div>
                         <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
+                        <a href="{% url 'result_name' image.name %}" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
                     </div>
                 </div>
-
     </div>
-    <div class="col-md-4">
-                      <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/17_right.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="info-post">
-                                <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
-                                <br>
-                                <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
-                            </div>
-                        </div>
-                        <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
-                    </div>
-                </div>
-
-    </div>
-    <div class="col-md-4">
-                      <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/16_right.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="info-post">
-                                <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
-                                <br>
-                                <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
-                            </div>
-                        </div>
-                        <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
-                    </div>
-                </div>
-
-    </div>
-    <div class="col-md-4">
-                      <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/10_right.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="info-post">
-                                <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
-                                <br>
-                                <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
-                            </div>
-                        </div>
-                        <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
-                    </div>
-                </div>
-
-    </div>
-    <div class="col-md-4">
-                      <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/16_right.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="info-post">
-                                <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
-                                <br>
-                                <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
-                            </div>
-                        </div>
-                        <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
-                    </div>
-                </div>
-
-    </div>
-    <div class="col-md-4">
-                      <div class="card card-post card-round">
-                    <img class="card-img-top" src="/static/assets/img/16_left.jpeg" alt="Card image cap">
-                    <div class="card-body">
-                        <div class="d-flex">
-                            <div class="info-post">
-                                <button class="btn btn-danger btn-sm btn-rounded">Non Labelized</button>
-                                <br>
-                                <br>
-                                <p class="date">Uploaded: 06 June 2020</p>
-                            </div>
-                        </div>
-                        <div class="separator-solid"></div>
-                        <a href="#" class="btn btn-primary btn-rounded btn-sm">Labelize</a>
-                    </div>
-                </div>
-
-    </div>
+  {% endfor %}
+  </div>
+  <div class="row">
+  <nav aria-label="Page navigation">
+      {% if images.has_other_pages %}
+  <ul class="pagination justify-content-end">
+    {% if images.has_previous %}
+      <li class="page-item"><a class="page-link" href="{% url 'labelize' images.previous_page_number %}">Previous</a></li>
+    {% else %}
+      <li class="disabled page-item"><span class="page-link">Previous</span></li>
+    {% endif %}
+    {% for i in images.paginator.page_range %}
+      {% if images.number == i %}
+        <li class="active page-item"><span class="page-link">{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li class="page-item" ><a class="page-link" href="{% url 'labelize' i %}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if images.has_next %}
+      <li class="page-item"><a class="page-link" href="{% url 'labelize' images.next_page_number %}">Next</a></li>
+    {% else %}
+      <li class="disbaled page-item"><span class="page-link">Next</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+</nav>
   </div>
 </div>
 

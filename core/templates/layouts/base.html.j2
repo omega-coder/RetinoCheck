@@ -40,9 +40,9 @@
 
 	<div class="wrapper {% block layout %}{% endblock layout %}">
 
-		{% include 'includes/navigation.html' %}
+		{% include 'includes/navigation.html.j2' %}
 
-		{% include 'includes/sidenav.html' %}
+		{% include 'includes/sidenav.html.j2' %}
 
 		<div class="main-panel">
 
@@ -52,15 +52,15 @@
 			
 			</div>
 
-			{% include 'includes/footer.html' %}
+			{% include 'includes/footer.html.j2' %}
 
 		</div>
 		
-		{% include 'includes/aside-settings.html' %}
+		{% include 'includes/aside-settings.html.j2' %}
 
 	</div>
 
-	{% include 'includes/scripts.html' %}
+	{% include 'includes/scripts.html.j2' %}
 
 	<!-- Specific JS goes HERE -->
     {% block javascripts %}{% endblock javascripts %}

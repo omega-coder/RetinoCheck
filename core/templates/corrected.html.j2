@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %} {% block title %} Prediction {% endblock title %}
+{% extends "layouts/base.html.j2" %} {% block title %} Prediction {% endblock title %}
 
 {% block stylesheets %}
 
@@ -38,7 +38,7 @@
                             l'image a été corrigée et incluse dans notre <span class="fw-bold">Dataset</span> dans les futures sessions de training.
                         </div>
                         <div class="card-detail">
-                              <a href="/labelise/" class="btn btn-light btn-rounded">Labeliser d'autre images?</a>
+                              <a href="/image/labelize/1/" class="btn btn-light btn-rounded">Labeliser d'autre images?</a>
                               <a href="/predict/" class="btn btn-light btn-rounded">Tester le modèle</a>
                         </div>
                     </div>

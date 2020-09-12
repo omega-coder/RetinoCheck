@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %}
+{% extends "layouts/base.html.j2" %}
 {% block title %}
 Dashboard 
 {% endblock title %}
@@ -51,7 +51,7 @@ Dashboard
         </h5>
       </div>
       <div class="ml-md-auto py-2 py-md-0">
-        <a href="/report/generate/" class="btn btn-white btn-round mr-2"
+        <a href="{% url 'genreport' instance.name %}" class="btn btn-white btn-round mr-2"
           >Generate Report</a
         >
       </div>

@@ -1,4 +1,4 @@
-{% extends "layouts/base.html" %} {% block title %} Dashboard {% endblock title %}
+{% extends "layouts/base.html.j2" %} {% block title %} Dashboard {% endblock title %}
 
 <!-- Specific CSS goes HERE -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
@@ -11,12 +11,12 @@
       <div>
         <h2 class="text-white pb-2 fw-bold">Statistiques</h2>
         <h5 class="text-white op-7 mb-2">
-          Tous les statistiques et informations sur le model et les images
+          Toutes les statistiques et informations sur le model et les images
           labelisees
         </h5>
       </div>
       <div class="ml-md-auto py-2 py-md-0">
-        <a href="#" class="btn btn-white btn-border btn-round mr-2">Predict</a>
+        <a href="{% url 'predict' %}" class="btn btn-white btn-border btn-round mr-2">Predict</a>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body pb-0">
-          <h2 class="mb-2 fw-bold text-primary">95%</h2>
+          <h2 class="mb-2 fw-bold text-primary">91%</h2>
           <p class="fw-bold">Accuracy</p>
           <div class="pull-in sparkline-fix">
             <div id="lineChart"></div>
@@ -38,7 +38,7 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body pb-0">
-          <h2 class="mb-2 fw-bold text-danger">+12,000</h2>
+          <h2 class="mb-2 fw-bold text-danger">+35,126</h2>
           <p class="fw-bold">Images classifiees</p>
           <div class="pull-in sparkline-fix">
             <div id="lineChart2"></div>
@@ -49,7 +49,7 @@
     <div class="col-md-4">
       <div class="card">
         <div class="card-body pb-0">
-          <h2 class="mb-2 fw-bold text-success">10</h2>
+          <h2 class="mb-2 fw-bold text-success">{{ num_users }}</h2>
           <p class="fw-bold">Utilisateurs</p>
           <div class="pull-in sparkline-fix">
             <div id="lineChart3"></div>
@@ -58,32 +58,6 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-head-row">
-            <div class="card-title">Statistiques Model</div>
-            <div class="card-tools">
-              <a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
-                <span class="btn-label">
-                  <i class="fa fa-pencil"></i>
-                </span>
-                Exporter
-              </a>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="chart-container" style="min-height: 375px;">
-            <canvas id="statisticsChart"></canvas>
-          </div>
-          <div id="myChartLegend"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  
 </div>
 
 {% endblock content %} {% block javascripts %}
@@ -91,7 +65,7 @@
 <script src="/static/assets/js/demo.js"></script>
 
 <script>
-  $("#lineChart").sparkline([102, 109, 120, 99, 110, 105, 115], {
+  $("#lineChart").sparkline([10, 32, 45, 55, 66, 78, 91], {
     type: "line",
     height: "70",
     width: "100%",
@@ -100,7 +74,7 @@
     fillColor: "rgba(23, 125, 255, 0.14)",
   });
 
-  $("#lineChart2").sparkline([99, 125, 122, 105, 110, 124, 115], {
+  $("#lineChart2").sparkline([99, 100, 1000, 12000, 20000, 23000, 35126], {
     type: "line",
     height: "70",
     width: "100%",
@@ -109,7 +83,7 @@
     fillColor: "rgba(243, 84, 93, .14)",
   });
 
-  $("#lineChart3").sparkline([105, 103, 123, 100, 95, 105, 115], {
+  $("#lineChart3").sparkline([0, 1, 3, 4, 10, 10, 10], {
     type: "line",
     height: "70",
     width: "100%",
@@ -190,7 +164,7 @@
         yAxes: [
           {
             ticks: {
-              display: false, //this will remove only the label
+              display: false,
             },
             gridLines: {
               drawBorder: false,
