@@ -22,9 +22,9 @@ upload_parser.add_argument("image",
 upload_parser.add_argument("model_name", type=str, required=True)
 upload_parser.add_argument("model_type", type=int, required=True)
 
-LOADED_MODEL = {"name": "dr-latest", "model": None}
+LOADED_MODEL = {"name": "model-10-09-2020", "model": None}
 
-LOADED_MODEL["model"] = load_pretrained_model("dr-latest", model_type=0)
+LOADED_MODEL["model"] = load_pretrained_model("model-10-09-2020", model_type=0)
 
 
 
