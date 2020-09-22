@@ -55,7 +55,7 @@ def prediction(request):
                     image_file = convert_rgba_to_rgb(image_file)
                 image_bytes = io.BytesIO()
                 image_file.save(image_bytes, image_file.format)
-                data = {"model_name": "dr-latest", "model_type": 0}
+                data = {"model_name": "model-10-09-2020", "model_type": 0}
                 model = DRModel.objects.filter(name=data["model_name"]).first()
                 if model is None:
                     return redirect(request, "predict.html")
@@ -143,7 +143,7 @@ def correct_prediction(request):
                                                   "description")
                 context["uistyle"] = DIAG.get(int(instance.pred_class),
                                               "uistyle")
-                return render(request, "corrected.html.j2", context=context)
+                return render(request, "results.html.j2", context=context)
             else:
                 return redirect('predict')
     else:
@@ -215,7 +215,7 @@ def gen_report(request, name):
 
         # PDF GENERATION
         #command = "ls"
-        command = f'cd report; python3 gen_factsheet.py ../media/reports_data/{instance.name}.json'
+        command = f'cd report; /usr/bin/python3 gen_factsheet.py ../media/reports_data/{instance.name}.json'
         os.system(command)
 
 

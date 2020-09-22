@@ -138,6 +138,8 @@ media/*
 !media/.gitkeep
 !media/reports_data
 !media/reports
+media/reports/*
+media/reports_data/*
 
 # pretrained SavedModels 
 
